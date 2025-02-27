@@ -34,12 +34,19 @@ namespace Assets._Scripts
             Debug.Log("<color=green>Finish!</color>");
         }
 
-        private static void GetElements(Transform root, List<BaseCuiElement> elements)
+        public static void GetElements(Transform root, List<BaseCuiElement> elements)
         {
             foreach (Transform child in root)
             {
                 if (child.TryGetComponent(out BaseCuiElement element))
                 {
+                    if (child.TryGetComponent(out ICustomBuild b))
+                    {
+                        elements.Add(element);
+
+                        continue;
+                    }
+
                     elements.Add(element);
 
                     GetElements(child, elements);

@@ -2,10 +2,13 @@
 using Assets._Scripts.Ext;
 using Assets._Scripts.Utils;
 using System.Collections;
+using System.Net.NetworkInformation;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 namespace Assets._Scripts.CUI.Components
 {
@@ -17,11 +20,18 @@ namespace Assets._Scripts.CUI.Components
         [SerializeField]
         private RawImage _image;
 
-        public string Material { get; private set; }
-        public string Sprite { get; private set; }
-        public Sprite ElemenetImage { get; private set; }
-        public int ItemId { get; private set; }
-        public bool ImageLibrary { get; private set; }
+        [SerializeField] private string material;
+        [SerializeField] private string sprite;
+        [SerializeField] private int itemId;
+        [SerializeField] private Sprite elemenetImage;
+        [SerializeField] private bool imageLibrary;
+
+
+        public string Material => material;
+        public string Sprite => sprite;
+        public int ItemId => itemId;
+        public Sprite ElemenetImage => elemenetImage;
+        public bool ImageLibrary => imageLibrary;
 
         private void OnValidate()
         {
@@ -31,16 +41,16 @@ namespace Assets._Scripts.CUI.Components
         public void Draw()
         {
             EditorGUILayout.LabelField("Image", EditorStyles.centeredGreyMiniLabel);
-            Material = EditorGUILayout.TextField("Material", Material);
-            Sprite = EditorGUILayout.TextField("Sprite", Sprite);
-            ItemId = EditorGUILayout.IntField("ItemId", ItemId);
+            material = EditorGUILayout.TextField("Material", material);
+            sprite = EditorGUILayout.TextField("Sprite", sprite);
+            itemId = EditorGUILayout.IntField("ItemId", itemId);
             _image.color = EditorGUILayout.ColorField("Color", _image.color);
 
-            ImageLibrary = EditorGUILayout.Toggle("UseImageLibrary", ImageLibrary);
-            if (ImageLibrary)
+            imageLibrary = EditorGUILayout.Toggle("UseImageLibrary", imageLibrary);
+            if (imageLibrary)
             {
-                ElemenetImage = (Sprite)EditorGUILayout.ObjectField("PngImage", ElemenetImage, typeof(Sprite), false);
-                _image.texture = ElemenetImage?.texture;
+                elemenetImage = (Sprite)EditorGUILayout.ObjectField("PngImage", elemenetImage, typeof(Sprite), false);
+                _image.texture = elemenetImage?.texture;
             } 
         }
         public string ToCui()

@@ -14,16 +14,21 @@ namespace Assets._Scripts.CUI.Elements
         public CuiImageComponent CuiImageComponent { get; private set; }
         public CuiRawImageComponent CuiRawImageComponent { get; private set; }
 
-        public string Close {  get; private set; }
-        public string Command {  get; private set; }
+        public string Close => close;
+        public string Command => command;
+        public bool Advanced => advanced;
 
-        public bool Advanced { get; private set; }
+        [SerializeField] private string close;
+        [SerializeField] private string command;
+        [SerializeField] private bool advanced;
 
         private bool _lastAdvanced;
 
         protected override void OnValidate()
         {
             base.OnValidate();
+
+            CuiTextComponent = transform.Find("Text")?.GetOrAddComponent<CuiTextComponent>();
 
             if (!CuiTextComponent)
             {
@@ -72,9 +77,9 @@ namespace Assets._Scripts.CUI.Elements
             base.DrawElements();
 
             EditorGUILayout.LabelField("Button", EditorStyles.centeredGreyMiniLabel);
-            Advanced = EditorGUILayout.Toggle("Advanced", Advanced);
-            Close = EditorGUILayout.TextField("Close", Close);
-            Command = EditorGUILayout.TextField("Command", Command);
+            advanced = EditorGUILayout.Toggle("Advanced", advanced);
+            close = EditorGUILayout.TextField("Close", close);
+            command = EditorGUILayout.TextField("Command", command);
 
 
 

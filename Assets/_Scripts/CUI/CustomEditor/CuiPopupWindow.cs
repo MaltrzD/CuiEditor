@@ -1,6 +1,5 @@
 using Assets._Scripts.CUI;
 using UnityEditor;
-using UnityEngine;
 
 public class CuiAutoPopupWindow : EditorWindow
 {

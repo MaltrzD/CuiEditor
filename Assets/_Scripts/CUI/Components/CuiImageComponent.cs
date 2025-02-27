@@ -14,10 +14,15 @@ public class CuiImageComponent : MonoBehaviour, ICuiComponent
     [SerializeField]
     private Image _image;
 
-    public string Material { get; private set; }
-    public string Sprite { get; private set; }
-    public string Png { get; private set; }
-    public int ItemId { get; private set; }
+    [SerializeField] private string material;
+    [SerializeField] private string sprite;
+    [SerializeField] private string png;
+    [SerializeField] private int itemId;
+
+    public string Material => material;
+    public string Sprite => sprite;
+    public string Png => png;
+    public int ItemId => itemId;
 
     private void OnValidate()
     {
@@ -27,10 +32,10 @@ public class CuiImageComponent : MonoBehaviour, ICuiComponent
     public void Draw()
     {
         EditorGUILayout.LabelField("Image", EditorStyles.centeredGreyMiniLabel);
-        Material = EditorGUILayout.TextField("Material", Material);
-        Sprite = EditorGUILayout.TextField("Sprite", Sprite);
-        ItemId = EditorGUILayout.IntField("ItemId", ItemId);
-        Png = EditorGUILayout.TextField("Png", Png);
+        material = EditorGUILayout.TextField("Material", material);
+        sprite = EditorGUILayout.TextField("Sprite", sprite);
+        itemId = EditorGUILayout.IntField("ItemId", itemId);
+        png = EditorGUILayout.TextField("Png", png);
         _image.color = EditorGUILayout.ColorField("Color", _image.color);
         FadeIn = EditorGUILayout.FloatField("FadeIn", FadeIn);
     }
@@ -39,10 +44,10 @@ public class CuiImageComponent : MonoBehaviour, ICuiComponent
         return
             "\t\t\tnew CuiImageComponent()" +
             "\n\t\t\t\t\t{" +
-            $"{OtherExt.Escape("\n\t\t\t\t\t\tMaterial = \"\",", Material)}" +
-            $"{OtherExt.Escape("\n\t\t\t\t\t\tSprite = \"\",", Sprite)}" +
-            $"{OtherExt.Escape("\n\t\t\t\t\t\tItemId = \"\",", ItemId)}" +
-            $"{OtherExt.Escape("\n\t\t\t\t\t\tPng = \"\",", Png)}" +
+            $"{OtherExt.Escape("\n\t\t\t\t\t\tMaterial = \"\",", material)}" +
+            $"{OtherExt.Escape("\n\t\t\t\t\t\tSprite = \"\",", sprite)}" +
+            $"{OtherExt.Escape("\n\t\t\t\t\t\tItemId = \"\",", itemId)}" +
+            $"{OtherExt.Escape("\n\t\t\t\t\t\tPng = \"\",", png)}" +
             $"\n\t\t\t\t\t\tColor = \"{_image.color.ToRust()}\"," +
             "\n\t\t\t\t\t},";
     }

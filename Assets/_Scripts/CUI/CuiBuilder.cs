@@ -22,8 +22,17 @@ namespace Assets._Scripts.CUI
 
         public static string Build(IEnumerable<BaseCuiElement> elements)
         {
+            var groupedElements = elements.ToLookup(x => x.GetComponent<ICustomBuild>() != null);
+
             var builder = new StringBuilder();
             storedImages.Clear();
+
+            foreach (var build in groupedElements[true].Select(e => e.GetComponent<ICustomBuild>()))
+            {
+                builder.AppendLine(build.Build());
+            }
+
+            elements = groupedElements[false];
 
             //CUI
             builder.AppendLine("[ChatCommand(\"ui\")]");
@@ -61,6 +70,7 @@ namespace Assets._Scripts.CUI
 
                 builder.AppendLine("}");
             }
+
             return builder.ToString();
         }
     }

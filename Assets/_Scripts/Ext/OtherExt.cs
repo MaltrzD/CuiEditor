@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Assets._Scripts.CUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets._Scripts.Ext
 {
@@ -19,6 +21,20 @@ namespace Assets._Scripts.Ext
             }
 
             return value.Replace("\"\"", $"\"{arg}\"");
+        }
+
+        // далбоеб на связи 
+        public static string OverrideRectTransform(this string originalString, BaseCuiElement element, string anchorMin, string anchorMax, string offsetMin, string offsetMax)
+        {
+            Debug.Log(originalString);
+            Debug.Log($"AnchorMin = \"{element.AnchorMin}\"");
+            Debug.Log($"AnchorMin = \"{anchorMin}\"");
+
+            return originalString
+                .Replace($"AnchorMin = \"{element.AnchorMin.ToCuiFormat()}\"", $"AnchorMin = {anchorMin}")
+                .Replace($"AnchorMax = \"{element.AnchorMax.ToCuiFormat()}\"", $"AnchorMax = {anchorMax}")
+                .Replace($"OffsetMin = \"{element.OffsetMin.ToCuiFormat()}\"", $"OffsetMin = {offsetMin}")
+                .Replace($"OffsetMax = \"{element.OffsetMax.ToCuiFormat()}\"", $"OffsetMax = {offsetMax}");
         }
     }
 }

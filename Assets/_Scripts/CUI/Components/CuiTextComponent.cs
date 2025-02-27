@@ -9,7 +9,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class CuiTextComponent : MonoBehaviour, ICuiComponent
 {
-    public float FadeIn { get; private set; }
+    [SerializeField] private float fadeIn;
+
+    public float FadeIn => fadeIn;
     public Text Text => _text;
     
     private Text _text;
@@ -22,7 +24,7 @@ public class CuiTextComponent : MonoBehaviour, ICuiComponent
     {
         EditorGUILayout.LabelField("TEXT", EditorStyles.centeredGreyMiniLabel);
 
-        FadeIn = EditorGUILayout.FloatField("fadeIn", FadeIn);
+        fadeIn = EditorGUILayout.FloatField("fadeIn", fadeIn);
         _text.text = EditorGUILayout.TextField("Text", _text.text);
         _text.color = EditorGUILayout.ColorField("Color", _text.color);
         _text.fontSize = EditorGUILayout.IntField("FontSize", _text.fontSize);
@@ -35,7 +37,7 @@ public class CuiTextComponent : MonoBehaviour, ICuiComponent
         "\n\t\t\t\t\t{" +
         $"\n\t\t\t\t\t\tText = \"{_text.text}\"," +
         $"\n\t\t\t\t\t\tFontSize = {_text.fontSize}," +
-        $"\n\t\t\t\t\t\tFadeIn = {(FadeIn).ToString().Replace(',', '.')}f," +
+        $"\n\t\t\t\t\t\tFadeIn = {fadeIn.ToString().Replace(',', '.')}f," +
         $"\n\t\t\t\t\t\tColor = \"{_text.color.ToRust()}\"," +
         $"\n\t\t\t\t\t\tAlign = TextAnchor.{_text.alignment}," +
         "\n\t\t\t\t\t},";

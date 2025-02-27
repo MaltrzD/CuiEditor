@@ -1,3 +1,91 @@
+private void DrawFill_FILL(BasePlayer player)
+{
+    CuiElementContainer container = new CuiElementContainer();
+container.Add(new CuiElement
+{
+	Parent = "MENU",
+	Name = "FILL",
+
+Components =
+				{
+					new CuiRectTransformComponent()
+					{
+						AnchorMin = "0 0",
+						AnchorMax = "1 1",
+						OffsetMin = "0 0",
+						OffsetMax = "0 -50"
+					},
+					new CuiImageComponent()
+					{
+						Color = "0 0 0 0",
+					},
+				}
+});
+
+    var rectMin = new Vector2(20, -220);
+    var rectMax = new Vector2(220, -20);
+    for (int i = 0; i < 10; i++)
+    {
+        if (i % 5 == 0 && i != 0)
+        {
+            rectMin.y -= 200 + 10;
+            rectMax.y -= 200 + 10;
+            rectMin.x = 20;
+            rectMax.x = 20 + 200;
+        }
+
+container.Add(new CuiElement
+{
+	Parent = "FILL",
+	Name = "IMG",
+
+Components =
+				{
+					new CuiRectTransformComponent()
+					{
+						AnchorMin = "0 1",
+						AnchorMax = "0 1",
+						OffsetMin = $"{rectMin.x:0.#######} {rectMin.y:0.#######}",
+						OffsetMax = $"{rectMax.x:0.#######} {rectMax.y:0.#######}"
+					},
+					new CuiImageComponent()
+					{
+						Color = "1 1 1 1",
+					},
+				}
+});
+
+container.Add(new CuiElement
+{
+	Parent = "IMG",
+	Name = "DESC",
+
+Components =
+				{
+					new CuiRectTransformComponent()
+					{
+						AnchorMin = "0 0",
+						AnchorMax = "1 1",
+						OffsetMin = "0 0",
+						OffsetMax = "0 0"
+					},
+					new CuiTextComponent()
+					{
+						Text = "Text",
+						FontSize = 51,
+						FadeIn = 0f,
+						Color = "0 0 0 1",
+						Align = TextAnchor.MiddleCenter,
+					},
+				}
+});
+
+        rectMin.x += 200 + 10;
+        rectMax.x += 200 + 10;
+    }
+    CuiHelper.AddUi(player, container);
+}
+
 [ChatCommand("ui")]
 private void DrawUI(BasePlayer player)
 {
@@ -76,15 +164,13 @@ container.Add(new CuiButton()
 {
 	Button =
 				{
-					Close = "MENU",
 					Color = "1 1 1 1",
 				},
 	Text =
 				{
-					Text = "X",
-					Align = TextAnchor.MiddleCenter,
-					Color = "0.2 0.2 0.2 1",
-					FontSize = 41,
+					Align = TextAnchor.UpperLeft,
+					Color = "1 1 1 1",
+					FontSize = 14,
 				},
 	RectTransform =
 				{
@@ -94,31 +180,6 @@ container.Add(new CuiButton()
 					OffsetMax = "0 25",
 				},
 }, "HEAD", "BTN_CLOSE");
-
-container.Add(new CuiElement
-{
-	Parent = "MENU",
-	Name = "Text",
-
-Components =
-				{
-					new CuiRectTransformComponent()
-					{
-						AnchorMin = "0 0",
-						AnchorMax = "1 1",
-						OffsetMin = "5.999985 6",
-						OffsetMax = "-5.999985 -50"
-					},
-					new CuiTextComponent()
-					{
-						Text = "Описание сервера",
-						FontSize = 69,
-						FadeIn = 0f,
-						Color = "1 0 0 1",
-						Align = TextAnchor.UpperLeft,
-					},
-				}
-});
 
 CuiHelper.AddUi(player, container);
 }

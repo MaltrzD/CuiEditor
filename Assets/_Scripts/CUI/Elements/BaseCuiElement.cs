@@ -13,8 +13,9 @@ namespace Assets._Scripts.CUI
     {
         protected static StringBuilder sb = new StringBuilder();
         public RectTransform _rectTransform;
-        public float FadeOut { get; private set; }
-        public bool NeedCursor { get; private set; }
+
+        [SerializeField] private float fadeOut;
+        [SerializeField] private bool needCursor;
 
         protected virtual void OnValidate()
         {
@@ -45,7 +46,7 @@ namespace Assets._Scripts.CUI
             sb.AppendLine("\t\t" + GetRectTransformComponent());
             sb.AppendLine("\t\t" + components);
 
-            if (NeedCursor)
+            if (needCursor)
                 sb.AppendLine(GetNeedMouseComponent());
 
             sb.AppendLine("\t\t\t\t}");
@@ -74,8 +75,10 @@ namespace Assets._Scripts.CUI
         public virtual void DrawElements()
         {
             gameObject.name = EditorGUILayout.TextField("Name", gameObject.name);
-            FadeOut = EditorGUILayout.FloatField("FadeOut", FadeOut);
-            NeedCursor = EditorGUILayout.Toggle("NeedCursor", NeedCursor);
+            fadeOut = EditorGUILayout.FloatField("FadeOut", fadeOut);
+            needCursor = EditorGUILayout.Toggle("NeedCursor", needCursor);
+
+            EditorUtility.SetDirty(this);
         }
         public virtual void Setup() { }
     }
