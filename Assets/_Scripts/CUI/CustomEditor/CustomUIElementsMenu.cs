@@ -52,6 +52,15 @@ public static class CustomUIElementsMenu
 
         SetParentAndAlign(button.gameObject);
     }
+    [MenuItem(MenuPath + "Fill", false, 10)]
+    private static void CreateFill()
+    {
+        var button = Create<CuiFillerSimple>("FILL");
+
+        ResetElement(button.gameObject);
+
+        SetParentAndAlign(button.gameObject);
+    }
 
     private static T Create<T>(string name = "CuiElement") where T : BaseCuiElement
     {
