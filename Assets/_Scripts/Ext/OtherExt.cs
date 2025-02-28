@@ -26,15 +26,13 @@ namespace Assets._Scripts.Ext
         // далбоеб на связи 
         public static string OverrideRectTransform(this string originalString, BaseCuiElement element, string anchorMin, string anchorMax, string offsetMin, string offsetMax)
         {
-            Debug.Log(originalString);
-            Debug.Log($"AnchorMin = \"{element.AnchorMin}\"");
-            Debug.Log($"AnchorMin = \"{anchorMin}\"");
-
             return originalString
                 .Replace($"AnchorMin = \"{element.AnchorMin.ToCuiFormat()}\"", $"AnchorMin = {anchorMin}")
                 .Replace($"AnchorMax = \"{element.AnchorMax.ToCuiFormat()}\"", $"AnchorMax = {anchorMax}")
                 .Replace($"OffsetMin = \"{element.OffsetMin.ToCuiFormat()}\"", $"OffsetMin = {offsetMin}")
                 .Replace($"OffsetMax = \"{element.OffsetMax.ToCuiFormat()}\"", $"OffsetMax = {offsetMax}");
         }
+
+        public static string FloatToStringFormat(this float value) => value.ToString().Replace(',', '.') + "f";
     }
 }

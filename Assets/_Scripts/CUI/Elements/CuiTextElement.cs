@@ -21,9 +21,9 @@ namespace Assets._Scripts.CUI.Elements
 
             CuiTextComponent.Draw();
         }
-        public override string ToCui(string components = "")
+        public override string ToCui(string components = "", string overrideParent = null, string overrideName = null)
         {
-            return base.ToCui(CuiTextComponent.ToCui());
+            return base.ToCui(CuiTextComponent.ToCui(), overrideParent, overrideName);
         }
     }
 }

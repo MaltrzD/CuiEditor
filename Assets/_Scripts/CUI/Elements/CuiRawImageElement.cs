@@ -22,9 +22,9 @@ namespace Assets._Scripts.CUI.Elements
             CuiRawImageComponent.Draw();
         }
 
-        public override string ToCui(string components = "")
+        public override string ToCui(string components = "", string overrideParent = null, string overrideName = null)
         {
-            return base.ToCui(CuiRawImageComponent.ToCui());
+            return base.ToCui(CuiRawImageComponent.ToCui(), overrideParent, overrideName);
         }
     }
 }

@@ -95,21 +95,34 @@ namespace Assets._Scripts.CUI.Elements
             if (Advanced) CuiRawImageComponent?.Draw();
             else CuiImageComponent?.Draw();
         }
-        public override string ToCui(string components = "")
+        public override string ToCui(string components = "", string overrideParent = null, string overrideName = null)
         {
             if (Advanced)
             {
-                components += base.ToCui(CuiRawImageComponent.ToCui()) + GetButton();
+                components += base.ToCui(CuiRawImageComponent.ToCui(), overrideParent, overrideName) + GetButton(overrideParent, overrideName);
 
                 return components;
             }
             else
             {
-                return GetButton() + "\n";
+                return GetButton(overrideParent, overrideName) + "\n";
+            }
+        }
+        public string ToCuiFill(string components = "", string overrideParent = null, string overrideName = null)
+        {
+            if (Advanced)
+            {
+                components += base.ToCui(CuiRawImageComponent.ToCui(), overrideParent, overrideName) + GetButton(overrideName, overrideParent);
+
+                return components;
+            }
+            else
+            {
+                return GetButton(overrideParent, overrideName) + "\n";
             }
         }
 
-        private string GetButton()
+        private string GetButton(string overrideParent = null, string overrideName = null)
         {
             Color btnColor = Advanced ? CuiRawImageComponent.Image.color : CuiImageComponent.Image.color;
             float fadeIn = Advanced ? CuiRawImageComponent.FadeIn : CuiImageComponent.FadeIn;
@@ -123,6 +136,9 @@ namespace Assets._Scripts.CUI.Elements
 
             string parent = Advanced ? transform.name : transform.parent.name;
             string name = Advanced ? "" : $", \"{transform.name}\"";
+
+            if(overrideParent != null) parent = overrideParent;
+            if (overrideName != null) name = $", $\"{overrideName}\"";
 
             string result = $"container.Add(new CuiButton()\n" +
                             $"{{\n" +
@@ -153,7 +169,7 @@ namespace Assets._Scripts.CUI.Elements
                             $"\t\t\t\t\tOffsetMax = \"{oMax.ToCuiFormat()}\",\n" +
                             $"\t\t\t\t}},\n" +
 
-                            $"}}, \"{parent}\"{name});";
+                            $"}}, $\"{parent}\"{name});";
 
             return result;//
         }

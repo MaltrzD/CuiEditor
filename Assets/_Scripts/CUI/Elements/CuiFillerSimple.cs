@@ -1,14 +1,11 @@
 using Assets._Scripts;
 using Assets._Scripts.CUI;
+using Assets._Scripts.CUI.Elements;
 using Assets._Scripts.Ext;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using System.Text;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CuiFillerSimple : BaseCuiElement, ICustomBuild
 {
@@ -105,22 +102,25 @@ public class CuiFillerSimple : BaseCuiElement, ICustomBuild
 
         builder.AppendLine(ToCui(GetImageComponent()));
 
-        builder.AppendLine($"    var rectMin = new Vector2({originalElement.OffsetMin.x}, {originalElement.OffsetMin.y});");
-        builder.AppendLine($"    var rectMax = new Vector2({originalElement.OffsetMax.x}, {originalElement.OffsetMax.y});");
+        builder.AppendLine($"    var rectMin = new Vector2({originalElement.OffsetMin.x.FloatToStringFormat()}, {originalElement.OffsetMin.y.FloatToStringFormat()});");
+        builder.AppendLine($"    var rectMax = new Vector2({originalElement.OffsetMax.x.FloatToStringFormat()}, {originalElement.OffsetMax.y.FloatToStringFormat()});");
 
         builder.AppendLine($"    for (int i = 0; i < {CountDrawElements}; i++)");
         builder.AppendLine("    {");
 
         builder.AppendLine($"        if (i % {PerPage} == 0 && i != 0)");
         builder.AppendLine("        {");
-        builder.AppendLine($"            rectMin.y -= {originalElement.OffsetMax.y - originalElement.OffsetMin.y} + {Spacing.y};");
-        builder.AppendLine($"            rectMax.y -= {originalElement.OffsetMax.y - originalElement.OffsetMin.y} + {Spacing.y};");
-        builder.AppendLine($"            rectMin.x = {originalElement.OffsetMin.x};");
-        builder.AppendLine($"            rectMax.x = {originalElement.OffsetMin.x} + {originalElement.OffsetMax.x - originalElement.OffsetMin.x};");
+        builder.AppendLine($"            rectMin.y -= {(originalElement.OffsetMax.y - originalElement.OffsetMin.y).FloatToStringFormat()} + {Spacing.y.FloatToStringFormat()};");
+        builder.AppendLine($"            rectMax.y -= {(originalElement.OffsetMax.y - originalElement.OffsetMin.y).FloatToStringFormat()} + {Spacing.y.FloatToStringFormat()};");
+        builder.AppendLine($"            rectMin.x = {originalElement.OffsetMin.x.FloatToStringFormat()};");
+        builder.AppendLine($"            rectMax.x = {originalElement.OffsetMin.x.FloatToStringFormat()} + {(originalElement.OffsetMax.x - originalElement.OffsetMin.x).FloatToStringFormat()};");
         builder.AppendLine("        }");
         builder.AppendLine("");
 
-        builder.AppendLine(originalElement.ToCui().OverrideRectTransform(originalElement,
+        string strOriginalElement = null;
+        if (originalElement is CuiButtonElement btn) strOriginalElement = btn.ToCuiFill(overrideName: $"{originalElement.name}_{{i}}");
+        else strOriginalElement = originalElement.ToCui(overrideName: $"{originalElement.name}_{{i}}");
+        builder.AppendLine(strOriginalElement.OverrideRectTransform(originalElement,
             $"\"{originalElement.AnchorMin.ToCuiFormat()}\"",
             $"\"{originalElement.AnchorMax.ToCuiFormat()}\"",
             "$\"{rectMin.x:0.#######} {rectMin.y:0.#######}\"",
@@ -130,12 +130,12 @@ public class CuiFillerSimple : BaseCuiElement, ICustomBuild
         Tests.GetElements(originalElement.transform, underOriginal);
         foreach (var item in underOriginal)
         {
-            builder.AppendLine(item.ToCui());
+            builder.AppendLine(item.ToCui(overrideParent: $"{originalElement.name}_{{i}}", overrideName: $"{item.transform.name}_{{i}}"));
         }
 
 
-        builder.AppendLine($"        rectMin.x += {originalElement.OffsetMax.x - originalElement.OffsetMin.x} + {Spacing.x};");
-        builder.AppendLine($"        rectMax.x += {originalElement.OffsetMax.x - originalElement.OffsetMin.x} + {Spacing.x};");
+        builder.AppendLine($"        rectMin.x += {(originalElement.OffsetMax.x - originalElement.OffsetMin.x).FloatToStringFormat()} + {Spacing.x.FloatToStringFormat()};");
+        builder.AppendLine($"        rectMax.x += {(originalElement.OffsetMax.x - originalElement.OffsetMin.x).FloatToStringFormat()} + {Spacing.x.FloatToStringFormat()};");
         builder.AppendLine("    }");
 
         builder.AppendLine("    CuiHelper.AddUi(player, container);");

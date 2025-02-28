@@ -28,15 +28,17 @@ namespace Assets._Scripts.CUI
         public Vector2 OffsetMax { get => _rectTransform.offsetMax; }
 
         //
-        public virtual string ToCui(string components = "")
+        public virtual string ToCui(string components = "", string overrideParent = null, string overrideName = null)
         {
             sb.Clear();
             sb.AppendLine($"container.Add(new CuiElement");
             sb.AppendLine("{");
 
+            string parent = overrideParent == null ? transform.parent.name : overrideParent;
+            string eName = overrideName == null ? gameObject.name : overrideName;
 
-            sb.AppendLine($"\tParent = \"{transform.parent.name}\",");
-            sb.AppendLine($"\tName = \"{gameObject.name}\",");
+            sb.AppendLine($"\tParent = $\"{parent}\",");
+            sb.AppendLine($"\tName = $\"{eName}\",");
 
             sb.AppendLine();
 

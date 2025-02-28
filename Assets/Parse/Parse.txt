@@ -3,8 +3,8 @@ private void DrawFill_FILL(BasePlayer player)
     CuiElementContainer container = new CuiElementContainer();
 container.Add(new CuiElement
 {
-	Parent = "MENU",
-	Name = "FILL",
+	Parent = $"MENU",
+	Name = $"FILL",
 
 Components =
 				{
@@ -22,29 +22,29 @@ Components =
 				}
 });
 
-    var rectMin = new Vector2(20, -220);
-    var rectMax = new Vector2(220, -20);
-    for (int i = 0; i < 10; i++)
+    var rectMin = new Vector2(-540f, 175f);
+    var rectMax = new Vector2(540f, 225f);
+    for (int i = 0; i < 8; i++)
     {
-        if (i % 5 == 0 && i != 0)
+        if (i % 1 == 0 && i != 0)
         {
-            rectMin.y -= 200 + 10;
-            rectMax.y -= 200 + 10;
-            rectMin.x = 20;
-            rectMax.x = 20 + 200;
+            rectMin.y -= 50f + 5f;
+            rectMax.y -= 50f + 5f;
+            rectMin.x = -540f;
+            rectMax.x = -540f + 1080f;
         }
 
 container.Add(new CuiElement
 {
-	Parent = "FILL",
-	Name = "IMG",
+	Parent = $"FILL",
+	Name = $"IMG_{i}",
 
 Components =
 				{
 					new CuiRectTransformComponent()
 					{
-						AnchorMin = "0 1",
-						AnchorMax = "0 1",
+						AnchorMin = "0.5 0.5",
+						AnchorMax = "0.5 0.5",
 						OffsetMin = $"{rectMin.x:0.#######} {rectMin.y:0.#######}",
 						OffsetMax = $"{rectMax.x:0.#######} {rectMax.y:0.#######}"
 					},
@@ -57,8 +57,8 @@ Components =
 
 container.Add(new CuiElement
 {
-	Parent = "IMG",
-	Name = "DESC",
+	Parent = $"IMG_{i}",
+	Name = $"Text_{i}",
 
 Components =
 				{
@@ -72,7 +72,7 @@ Components =
 					new CuiTextComponent()
 					{
 						Text = "Text",
-						FontSize = 51,
+						FontSize = 39,
 						FadeIn = 0f,
 						Color = "0 0 0 1",
 						Align = TextAnchor.MiddleCenter,
@@ -80,8 +80,8 @@ Components =
 				}
 });
 
-        rectMin.x += 200 + 10;
-        rectMax.x += 200 + 10;
+        rectMin.x += 1080f + 5f;
+        rectMax.x += 1080f + 5f;
     }
     CuiHelper.AddUi(player, container);
 }
@@ -93,8 +93,8 @@ var container = new CuiElementContainer();
 
 container.Add(new CuiElement
 {
-	Parent = "Overlay",
-	Name = "MENU",
+	Parent = $"Overlay",
+	Name = $"MENU",
 
 Components =
 				{
@@ -116,8 +116,8 @@ Components =
 
 container.Add(new CuiElement
 {
-	Parent = "MENU",
-	Name = "HEAD",
+	Parent = $"MENU",
+	Name = $"HEAD",
 
 Components =
 				{
@@ -137,8 +137,8 @@ Components =
 
 container.Add(new CuiElement
 {
-	Parent = "HEAD",
-	Name = "Text",
+	Parent = $"HEAD",
+	Name = $"Text",
 
 Components =
 				{
@@ -164,13 +164,15 @@ container.Add(new CuiButton()
 {
 	Button =
 				{
+					Close = "MENU",
 					Color = "1 1 1 1",
 				},
 	Text =
 				{
-					Align = TextAnchor.UpperLeft,
-					Color = "1 1 1 1",
-					FontSize = 14,
+					Text = "<b>X</b>",
+					Align = TextAnchor.MiddleCenter,
+					Color = "0 0 0 1",
+					FontSize = 40,
 				},
 	RectTransform =
 				{
@@ -179,7 +181,7 @@ container.Add(new CuiButton()
 					OffsetMin = "-50 -25",
 					OffsetMax = "0 25",
 				},
-}, "HEAD", "BTN_CLOSE");
+}, $"HEAD", "BTN_CLOSE");
 
 CuiHelper.AddUi(player, container);
 }
