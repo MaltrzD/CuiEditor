@@ -107,7 +107,7 @@ Components =
 					},
 					new CuiRawImageComponent()
 					{
-						Png = GetImage("MENU_Image"),
+						Png = GetImage("https://i.imgur.com/6yszZH6.jpeg"),
 						Color = "1 1 1 1",
 					},
 					new CuiNeedsCursorComponent() { },
@@ -183,6 +183,28 @@ container.Add(new CuiButton()
 				},
 }, $"HEAD", "BTN_CLOSE");
 
+container.Add(new CuiElement
+{
+	Parent = $"HEAD",
+	Name = $"RawImage",
+
+Components =
+				{
+					new CuiRectTransformComponent()
+					{
+						AnchorMin = "0 0.5",
+						AnchorMax = "0 0.5",
+						OffsetMin = "0 -25",
+						OffsetMax = "150 25"
+					},
+					new CuiRawImageComponent()
+					{
+						Png = GetImage("https://i.imgur.com/6yszZH6.jpeg"),
+						Color = "1 1 1 1",
+					},
+				}
+});
+
 CuiHelper.AddUi(player, container);
 }
 [PluginReference] private Plugin ImageLibrary;
@@ -190,5 +212,6 @@ public string GetImage(string shortname, ulong skin = 0) => (string)ImageLibrary
 public bool AddImage(string url, string shortname, ulong skin = 0) => (bool)ImageLibrary?.Call("AddImage", url, shortname, skin);
 private void OnServerInitialized()
 {
-AddImage("https://i.imgur.com/9oNyIZu.jpeg", "MENU_Image");
+AddImage("https://i.imgur.com/6yszZH6.jpeg", "MENU");
+AddImage("https://i.imgur.com/6yszZH6.jpeg", "RawImage");
 }

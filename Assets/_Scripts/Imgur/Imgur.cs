@@ -24,21 +24,11 @@ namespace Assets._Scripts.Utils
         private static readonly string _dataPath = Path.Combine(Application.persistentDataPath, "ImgurData.json");
         private static readonly string _apiUrl = "https://api.imgur.com/3/image";
 
-        public static ImageLibraryImage GetImage(string name, byte[] imageData)
+        public static string GetImage(byte[] imageData)
         {
-            var cached = _images.Images.FirstOrDefault(x => x.ShortName == name);
-            if (cached != null)
-            {
-                if (CheckHash(imageData, cached.Hash))
-                {
-                    Debug.Log($"FromCache: {name}");
-                    return new ImageLibraryImage
-                    {
-                        Name = name,
-                        Url = cached.Url
-                    };
-                }
-            }
+            var hash = ComputeHash(imageData);
+            var cached = _images.Images.Where(x => CheckHash(hash, x.Hash)).FirstOrDefault();
+            if (cached != null) return cached.Url;
 
             WWWForm form = new WWWForm();
             form.AddField("type", "image");
@@ -59,19 +49,12 @@ namespace Assets._Scripts.Utils
                 _images.Images.Add(new ImgurImage
                 {
                     Hash = ComputeHash(imageData),
-                    ShortName = name,
                     Url = imageLink
                 });
 
-                Debug.Log("Add to cache");
-
                 SaveData();
 
-                return new ImageLibraryImage
-                {
-                    Url = imageLink,
-                    Name = name
-                };
+                return imageLink;
             }
             else
             {
@@ -101,7 +84,19 @@ namespace Assets._Scripts.Utils
             if (File.Exists(_dataPath))
             {
                 string json = File.ReadAllText(_dataPath);
-                _images = JsonConvert.DeserializeObject<ImgurImageWrapper>(json);
+
+                try
+                {
+                    _images = JsonConvert.DeserializeObject<ImgurImageWrapper>(json);
+                }
+                catch
+                {
+                    Debug.LogError("Images data has broken");
+
+                    _images = new ImgurImageWrapper();
+
+                    SaveData();
+                }
 
                 Debug.Log($"Loaded cached imaes: {_images.Images.Count}");
             }
@@ -125,22 +120,15 @@ namespace Assets._Scripts.Utils
                 return hashStringBuilder.ToString();
             }
         }
-        public static bool CheckHash(byte[] data, string expectedHash)
+        public static bool CheckHash(string hash, string expectedHash)
         {
-            string computedHash = ComputeHash(data);
-            return computedHash.Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
+            return hash.Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
         }
-    }
-    public class ImageLibraryImage
-    {
-        public string Name { get; set; }
-        public string Url { get; set; }
     }
 
     [Serializable]
     public class ImgurImage
     {
-        public string ShortName;
         public string Url;
         public string Hash;
     }

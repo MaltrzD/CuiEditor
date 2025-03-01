@@ -11,11 +11,10 @@ namespace Assets._Scripts.CUI
 {
     public class CuiBuilder
     {
-        private static List<ImageLibraryImage> storedImages = new List<ImageLibraryImage>();
-        public static void AddImage(ImageLibraryImage image)
+        private static List<(string url, string name)> storedImages = new List<(string, string)>();
+        public static void AddImage((string, string) image)
         {
             if(storedImages.Contains(image)) return;
-            if (image == null) return;
 
             storedImages.Add(image);
         }
@@ -65,7 +64,7 @@ namespace Assets._Scripts.CUI
 
                 foreach (var img in storedImages)
                 {
-                    builder.AppendLine($"AddImage(\"{img.Url}\", \"{img.Name}\");");
+                    builder.AppendLine($"AddImage(\"{img.url}\", \"{img.name}\");");
                 }
 
                 builder.AppendLine("}");

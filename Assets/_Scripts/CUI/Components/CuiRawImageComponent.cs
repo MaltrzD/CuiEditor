@@ -50,20 +50,22 @@ namespace Assets._Scripts.CUI.Components
             if (imageLibrary)
             {
                 elemenetImage = (Sprite)EditorGUILayout.ObjectField("PngImage", elemenetImage, typeof(Sprite), false);
-                _image.texture = elemenetImage?.texture;
-            } 
+
+                if(elemenetImage != null)
+                    _image.texture = elemenetImage.texture;
+            }
         }
         public string ToCui()
         {
             string png = "";
-            if(ImageLibrary && ElemenetImage != null)
+            if (ImageLibrary && ElemenetImage != null)
             {
-                ImageLibraryImage img = Imgur.GetImage(gameObject.name + "_Image", ElemenetImage.texture.EncodeToPNG());
+                string img = Imgur.GetImage(ElemenetImage.texture.EncodeToPNG());
                 if (img != null)
                 {
-                    png = OtherExt.Escape("\n\t\t\t\t\t\tPng = GetImage(\"\"),", img.Name);
+                    png = OtherExt.Escape("\n\t\t\t\t\t\tPng = GetImage(\"\"),", img);
 
-                    CuiBuilder.AddImage(img);
+                    CuiBuilder.AddImage((img, transform.name));
                 }
                 else
                 {
